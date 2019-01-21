@@ -1,13 +1,49 @@
-document.addEventListener(DOMContentLoaded, function() {
-
+document.addEventListener("DOMContentLoaded", function() {
 
     var canvas = document.getElementById('canvas');
-    var c = canvas.getContext('2d');
-     
+    var ctx = canvas.getContext('2d');
+    ctx.canvas.width = window.innerWidth;
+    ctx.canvas.height = window.innerHeight;
+    console.log(ctx)
 
+    class Grid {
+        constructor(gridDim, pd) {
+            this.gridDim = gridDim;
+            this.pd = pd; 
+            this.gridWidth = function() {
 
+            }
+        }
+        gridDrawing() {
+            for (let i = 0; i < (this.gridDim + 1); i++){      // grid dimensions only need one variable as the board is square
+                ctx.moveTo(this.pd, this.pd + (100 * i));
+                ctx.lineTo(this.pd + (100 * this.gridDim), this.pd + (100 * i));   
+            }
+            for (let i = 0; i < (this.gridDim + 1); i++) {
+                ctx.moveTo(this.pd + (100 * i), this.pd);
+                ctx.lineTo(this.pd + (100 * i), this.pd + (100 * this.gridDim));
+            }
+            ctx.strokeStyle = "#000";
+            ctx.stroke();
+        }
+    }
 
+    class Piece {
+        constructor(position, length, stride) {
+            this.length = length;
+            // Length can only be 2 or 3
+            this.startPos = [];
+            this.currentPos = [];
+        }
+        position() {
+            this.currentPos = 
+        }
 
+    }
+    // var ferrari = new Piece(2);
+    // ferrari.style.background = '#FF0000';
+    var gameGrid = new Grid(6, 10);
+    gameGrid.gridDrawing();
 
 }); //DOM Content closer
 
