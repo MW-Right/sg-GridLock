@@ -4,7 +4,8 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 ctx.canvas.width = "610";
 ctx.canvas.height = "610";
-var elements = [];
+var elements = [],
+    tempElements = [];
 
 class Grid {
     constructor(gridDim, pd) {
@@ -32,7 +33,7 @@ class Piece {
         this.x = x * 100;
         this.y = y * 100;
         this.direction = direction;
-        this.active = true;
+        this.active = false;
         this.pieceArea = [[]];
     }
     
@@ -56,6 +57,10 @@ class Piece {
     
 }
 
+// Instanciating the grid
+var gameGrid = new Grid(6, 10);
+gameGrid.gridDrawing();
+
 // Instanciating the pieces
 var v1 = new Piece(4, 2, 2, "vert");
 v1.drawPiece();
@@ -63,34 +68,48 @@ elements.push(v1);
 var h1 = new Piece(3, 0, 3, "vert");
 h1.drawPiece();
 elements.push(h1)
-console.log(h1.pieceArea)
 var ferrari = new Piece(0, 3, 2, "horz");
 ferrari.drawPiece();
 elements.push(ferrari);
+
+// ------+== Reset Button ==+-------
 var reset = document.getElementById('reset');
 reset.addEventListener('click', function() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    var h1 = new Piece(3, 0, 3, "vert");
-    h1.drawPiece();
-    var ferrari = new Piece(3, 3, 2, "horz");
-    ferrari.drawPiece();
-    console.log(elements)
-})
-canvas.addEventListener("click", (e) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     for (let i = 0; i < elements.length; i++) {
         elements[i].drawPiece();        
     }
-    console.log(e)
-    var newferrari = new Piece(Math.floor(e.pageX / 100), 3, 2, "horz")
-    newferrari.drawPiece();
-    elements.push(newferrari)
 })
+
+// ------+== On click listeners ==+----
+// If clicked in area of piece, switches the boolean
+canvas.addEventListener("mousedown", (e) => {
+    if (e.pageX > ferrari.pieceArea[0][0] && e.pageX < ferrari.pieceArea[1][0] && e.pageY > ferrari.pieceArea[0][1] && e.pageY < ferrari.pieceArea[2][1]){
+        ferrari.active = true; //((ferrari.active - 1) * (ferrari.active - 1))/ (ferrari.active + 1);
+        // console.log(ferrari.active);
+    }
+});
+canvas.addEventListener("mouseup", (e) => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < elements.length; i++) {
+        if (elements[i].active == false) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            elements[i].drawPiece();        
+        } else {
+            ferrari.x = (Math.floor(e.pageX / 100) * 100);
+            elements[i].drawPiece();
+        }
+        gameGrid.gridDrawing();
+    }
+})
+    
+    // console.log(e)
+    // var newferrari = new Piece(Math.floor(e.pageX / 100), 3, 2, "horz")
+    // newferrari.drawPiece();
+    // tempElements.push(newferrari)
 console.log(elements)
 
 
-var gameGrid = new Grid(6, 10);
-gameGrid.gridDrawing();
 
 
 
