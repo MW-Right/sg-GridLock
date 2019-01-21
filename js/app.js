@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", function() {
     var ctx = canvas.getContext('2d');
     ctx.canvas.width = window.innerWidth;
     ctx.canvas.height = window.innerHeight;
-    console.log(ctx)
 
     class Grid {
         constructor(gridDim, pd) {
@@ -29,19 +28,33 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     class Piece {
-        constructor(position, length, stride) {
+        constructor(x, y, length, direction) {
             this.length = length;
             // Length can only be 2 or 3
-            this.startPos = [];
-            this.currentPos = [];
+            this.x = x;
+            this.y = y;
+            this.direction = direction;
         }
+
         position() {
-            this.currentPos = 
+            ctx.fillStyle = "tomato"
+            if (this.direction === "vert") {
+                ctx.fillRect((this.x * 100) + 5, (this.y * 100) + 5, 95, (this.length * 95));
+                ctx.stroke();
+            } else if (this.direction === "horz") {
+                ctx.fillRect((this.x * 100) + 15, ((this.y - 1) * 100) + 15, (this.length * 95), 90)
+                ctx.stroke();
+            } else {
+                alert("Error in piece definition")
+            }
+        }
+        fillVehicle() {
+
         }
 
     }
-    // var ferrari = new Piece(2);
-    // ferrari.style.background = '#FF0000';
+    var ferrari = new Piece(0, 3, 2, "horz");
+    ferrari.position();
     var gameGrid = new Grid(6, 10);
     gameGrid.gridDrawing();
 
