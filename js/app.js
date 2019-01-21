@@ -2,8 +2,8 @@
 // Defining Canvas
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
-ctx.canvas.width = window.innerWidth;
-ctx.canvas.height = window.innerHeight;
+ctx.canvas.width = "610";
+ctx.canvas.height = "610";
 var elements = [];
 
 class Grid {
@@ -32,7 +32,8 @@ class Piece {
         this.x = x * 100;
         this.y = y * 100;
         this.direction = direction;
-        this.active = true
+        this.active = true;
+        this.pieceArea = [[]];
     }
     
     drawPiece() {
@@ -41,9 +42,12 @@ class Piece {
         if (this.direction === "vert") {
             ctx.fillStyle = "blue";
             ctx.fillRect(this.x - 85, this.y + 15, 90, (this.length * l));
+            this.pieceArea = [[this.x - 100, this.y], [this.x, this.y], [this.x - 100, this.y + (this.length * 100)], [this.x, this.y + (this.length * 100)]]
             ctx.stroke();
         } else if (this.direction === "horz") {
             ctx.fillRect(this.x + 15, (this.y - 85), (this.length * l), 90)
+            this.pieceArea = [[this.x, this.y - 100], [this.x  + (this.length * 100), this.y - 100], [this.x, this.y], [this.x + (this.length * 100), this.y]]
+            console.log(this.pieceArea)
             ctx.stroke();
         } else {
             alert("Error in piece definition")
@@ -51,23 +55,38 @@ class Piece {
     }
     
 }
+
 // Instanciating the pieces
+var v1 = new Piece(4, 2, 2, "vert");
+v1.drawPiece();
+elements.push(v1);
 var h1 = new Piece(3, 0, 3, "vert");
 h1.drawPiece();
 elements.push(h1)
-var ferrari = new Piece(3, 3, 2, "horz");
+console.log(h1.pieceArea)
+var ferrari = new Piece(0, 3, 2, "horz");
 ferrari.drawPiece();
 elements.push(ferrari);
-addEventListener("click", (e) => {
+var reset = document.getElementById('reset');
+reset.addEventListener('click', function() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    var h1 = new Piece(3, 0, 3, "vert");
+    h1.drawPiece();
+    var ferrari = new Piece(3, 3, 2, "horz");
+    ferrari.drawPiece();
+    console.log(elements)
+})
+canvas.addEventListener("click", (e) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     for (let i = 0; i < elements.length; i++) {
         elements[i].drawPiece();        
     }
     console.log(e)
-    var ferrari = new Piece(Math.floor(e.pageX / 100), 3, 2, "horz")
-    console.log(ferrari.x, ferrari.y)
-    ferrari.drawPiece();
+    var newferrari = new Piece(Math.floor(e.pageX / 100), 3, 2, "horz")
+    newferrari.drawPiece();
+    elements.push(newferrari)
 })
+console.log(elements)
 
 
 var gameGrid = new Grid(6, 10);
