@@ -49,16 +49,7 @@ class Piece {
             alert("Error in piece definition")
         }        
     }
-    this.addEventListener("click", (e) => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-        for (let i = 0; i < 1; i++) {
-            elements[i].drawPiece();        
-        }
-        console.log(e)
-        var ferrari = new Piece(Math.floor(e.pageX / 100), 3, 2, "horz")
-        console.log(ferrari.x, ferrari.y)
-        ferrari.drawPiece();
-    })
+    
 }
 // Instanciating the pieces
 var h1 = new Piece(3, 0, 3, "vert");
@@ -67,7 +58,16 @@ elements.push(h1)
 var ferrari = new Piece(3, 3, 2, "horz");
 ferrari.drawPiece();
 elements.push(ferrari);
-addEventListener
+addEventListener("click", (e) => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].drawPiece();        
+    }
+    console.log(e)
+    var ferrari = new Piece(Math.floor(e.pageX / 100), 3, 2, "horz")
+    console.log(ferrari.x, ferrari.y)
+    ferrari.drawPiece();
+})
 
 
 var gameGrid = new Grid(6, 10);
