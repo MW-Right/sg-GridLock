@@ -6,6 +6,7 @@ ctx.canvas.width = "610";
 ctx.canvas.height = "610";
 var elements = [],
     tempElements = [];
+var pieceAreaArr = [];
 
 class Grid {
     constructor(gridDim, pd) {
@@ -27,7 +28,7 @@ class Grid {
 }
 
 class Piece {
-    constructor(x, y, length, direction) {
+    constructor(x, y, length, direction, imp) {
         this.length = length;
         // Length can only be 2 or 3
         this.x = x * 100;
@@ -35,24 +36,31 @@ class Piece {
         this.direction = direction;
         this.active = false;
         this.pieceArea = [[]];
+        this.imp = imp;
     }
     
     drawPiece() {
-        ctx.fillStyle = "tomato"
         var l = (((this.length * 100) - 10) / this.length);
         if (this.direction === "vert") {
             ctx.fillStyle = "blue";
             ctx.fillRect(this.x - 85, this.y + 15, 90, (this.length * l));
-            this.pieceArea = [[this.x - 100, this.y], [this.x, this.y], [this.x - 100, this.y + (this.length * 100)], [this.x, this.y + (this.length * 100)]]
+            this.pieceArea = [[this.x - 100, this.y], [this.x, this.y], [this.x - 100, this.y + (this.length * 100)], [this.x, this.y + (this.length * 100)]];
             ctx.stroke();
-        } else if (this.direction === "horz") {
+        } else if (this.direction === "horz" && this.imp == false) {
+            ctx.fillStyle = "blue";
             ctx.fillRect(this.x + 15, (this.y - 85), (this.length * l), 90)
-            this.pieceArea = [[this.x, this.y - 100], [this.x  + (this.length * 100), this.y - 100], [this.x, this.y], [this.x + (this.length * 100), this.y]]
-            console.log(this.pieceArea)
+            this.pieceArea = [[this.x, this.y - 100], [this.x  + (this.length * 100), this.y - 100], [this.x, this.y], [this.x + (this.length * 100), this.y]];
             ctx.stroke();
-        } else {
-            alert("Error in piece definition")
+        } else if (this.direction === "horz" && this.imp == true) {
+            ctx.fillStyle = "tomato";
+            ctx.fillRect(this.x + 15, (this.y - 85), (this.length * l), 90);
+            this.pieceArea = [[this.x, this.y - 100], [this.x  + (this.length * 100), this.y - 100], [this.x, this.y], [this.x + (this.length * 100), this.y]];
+            ctx.stroke();
         }        
+    }
+    reset() {
+        var l = (((this.length * 100) - 10) / this.length);
+
     }
     
 }
@@ -62,47 +70,80 @@ var gameGrid = new Grid(6, 10);
 gameGrid.gridDrawing();
 
 // Instanciating the pieces
-var v1 = new Piece(4, 2, 2, "vert");
-v1.drawPiece();
-elements.push(v1);
-var h1 = new Piece(3, 0, 3, "vert");
-h1.drawPiece();
-elements.push(h1)
-var ferrari = new Piece(0, 3, 2, "horz");
-ferrari.drawPiece();
-elements.push(ferrari);
+let ferrari;
+let v1;
+let v2;
+let h1;
+function init() {  
+    elements = [];
+    ferrari = new Piece(0, 3, 2, "horz", 1);
+    ferrari.drawPiece();
+    elements.push(ferrari);
+    v2 = new Piece(4, 2, 2, "vert", 0);
+    v2.drawPiece();
+    elements.push(v2);
+    v1 = new Piece(3, 0, 3, "vert", 0);
+    v1.drawPiece();
+    elements.push(v1);
+    h1 = new Piece(0, 4, 3, "horz", 0)
+    h1.drawPiece();
+    elements.push(h1);
+};
+init();
+// let v2 = new Piece(4, 2, 2, "vert");
+// v2.drawPiece();
+// elements.push(v2);
+// let v1 = new Piece(3, 0, 3, "vert");
+// v1.drawPiece();
+// elements.push(v1)
+// let ferrari = new Piece(0, 3, 2, "horz");
+// ferrari.drawPiece();
+// elements.push(ferrari);
+
 
 // ------+== Reset Button ==+-------
 var reset = document.getElementById('reset');
 reset.addEventListener('click', function() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    for (let i = 0; i < elements.length; i++) {
-        elements[i].drawPiece();        
-    }
+    init();
 })
+
+// -----+== Animation Loop ==+------
+function animate() {
+    requestAnimationFrame(animate);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ferrari.drawPiece();
+}
 
 // ------+== On click listeners ==+----
 // If clicked in area of piece, switches the boolean
 canvas.addEventListener("mousedown", (e) => {
-    if (e.pageX > ferrari.pieceArea[0][0] && e.pageX < ferrari.pieceArea[1][0] && e.pageY > ferrari.pieceArea[0][1] && e.pageY < ferrari.pieceArea[2][1]){
-        ferrari.active = true; //((ferrari.active - 1) * (ferrari.active - 1))/ (ferrari.active + 1);
-        // console.log(ferrari.active);
-    }
+    for (let i = 0; i < elements.length; i++) {
+        if (e.pageX > elements[i].pieceArea[0][0] && e.pageX < elements[i].pieceArea[1][0] && e.pageY > elements[i].pieceArea[0][1] && e.pageY < elements[i].pieceArea[2][1]){
+            elements[i].active = true;
+            console.log(elements[i].active);
+        }   
+    }   
 });
 canvas.addEventListener("mouseup", (e) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    gameGrid.gridDrawing();
     for (let i = 0; i < elements.length; i++) {
-        if (elements[i].active == false) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height)
-            elements[i].drawPiece();        
-        } else {
-            ferrari.x = (Math.floor(e.pageX / 100) * 100);
-            elements[i].drawPiece();
+        if (elements[i].direction == "horz" && elements[i].active == true) {
+            elements[i].x = (Math.floor(e.pageX / 100) * 100);
+            elements[i].active = false;
+        } else if (elements[i].direction == "vert" && elements[i].active == true) {
+            elements[i].y = (Math.floor(e.pageY / 100) * 100);
+            elements[i].active = false;
         }
-        gameGrid.gridDrawing();
-    }
-})
+            elements[i].drawPiece();
+            console.log(elements[i].active)
+        }
+});
     
+
+
+
     // console.log(e)
     // var newferrari = new Piece(Math.floor(e.pageX / 100), 3, 2, "horz")
     // newferrari.drawPiece();
