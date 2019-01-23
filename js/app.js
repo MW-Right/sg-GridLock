@@ -2,10 +2,15 @@
 // Defining Canvas
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
-ctx.canvas.width = "610";
-ctx.canvas.height = "610";
-var elements = []
+ctx.canvas.width = "630";
+ctx.canvas.height = "630";
 
+// Setting full-scope variables
+var elements = []
+var score = document.getElementById('moves');
+    score.innerText = "0";
+
+// Grid Class
 class Grid {
     constructor(gridDim, pd) {
         this.gridDim = gridDim;
@@ -21,10 +26,18 @@ class Grid {
             ctx.lineTo(this.pd + (100 * i), this.pd + (100 * this.gridDim));
         }
         ctx.strokeStyle = "#000";
+        ctx.shadowColor = "#000";
+        ctx.shadowBlur = 10;
         ctx.stroke();
+    }
+    endGoal() {
+        ctx.fillStyle = "rgba(0, 255, 0, 0.7)"
+        ctx.fillRect(400, 200, 200, 100)
+        ctx.stroke(); 
     }
 }
 
+// Piece Class
 class Piece {
     constructor(x, y, length, direction, imp, w, h) {
         this.length = length;
@@ -81,6 +94,7 @@ class Piece {
                     } else if (this.index[j].vert == elements[i].index[k].vert && this.index[j].horz == elements[i].index[k].horz){
                         this.x = this.prevX;
                         this.y = this.prevY;
+                        this.collision = true;
                     }
                 }
             }
@@ -89,29 +103,40 @@ class Piece {
     drawPiece() {
         var l = (((this.length * 100) - 10) / this.length);
         this.com = [];
+        ctx.beginPath();
+        ctx.globalCompositeOperation = "source-over"
+        // Drawing the pieces
         if (this.direction === "vert") {
-            ctx.fillStyle = "blue";
+            ctx.fillStyle = "rgba(0, 0, 255, 1)";
             ctx.fillRect(this.x + 5, this.y + 5, 90, (this.length * l));
             this.pieceArea = [[this.x, this.y], [this.x + 100, this.y], [this.x, this.y + (this.length * 100)], [this.x + 100, this.y + (this.length * 100)]];
+            ctx.shadowColor = "#888";
+            ctx.shadowBlur = 10;
             ctx.stroke();
         } else if (this.direction === "horz" && this.imp == false) {
             ctx.fillStyle = "blue";
             ctx.fillRect(this.x + 5, (this.y + 5), (this.length * l), 90)
             this.pieceArea = [[this.x, this.y], [this.x  + (this.length * 100), this.y], [this.x, this.y + 100], [this.x + (this.length * 100), this.y + 100]];
+            ctx.shadowColor = "#888";
+            ctx.shadowBlur = 10;
             ctx.stroke();
-            
         } else if (this.direction === "horz" && this.imp == true) {
             ctx.fillStyle = "tomato";
             ctx.fillRect(this.x + 5, (this.y + 5), (this.length * l), 90);
             this.pieceArea = [[this.x, this.y], [this.x  + (this.length * 100), this.y], [this.x, this.y + 100], [this.x + (this.length * 100), this.y + 100]];
+            ctx.shadowColor = "#888";
+            ctx.shadowBlur = 10;
             ctx.stroke();
-        }     
+        }
+            
     }
     
 }
 
+// Instanciating the grid
 var gameGrid = new Grid(6, 0);
 gameGrid.gridDrawing();
+gameGrid.endGoal();
 
 // Instanciating the pieces
 let ferrari;
@@ -152,11 +177,15 @@ function init() {
 };
 init();
 
+
 // ------+== Reset Button ==+-------
 var reset = document.getElementById('reset');
 reset.addEventListener('click', function() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
+    gameGrid.gridDrawing();
+    gameGrid.endGoal();
     init();
+    score.innerText = "0";
 })
 
 // Win Condition
@@ -180,31 +209,59 @@ canvas.addEventListener("mousedown", (e) => {
 canvas.addEventListener("mouseup", (e) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     gameGrid.gridDrawing();
+    gameGrid.endGoal(); 
     for (let i = 0; i < elements.length; i++) {
         if (elements[i].direction == "horz" && elements[i].active == true) {
             elements[i].prevX = elements[i].x
             elements[i].prevY = elements[i].y
-            elements[i].x = (Math.floor(e.pageX / 100) * 100); 
+            elements[i].x = (Math.floor(e.pageX / 100) * 100);
+            // if (elements[i].collision == false) {
+                if (elements[i].x < 0) {
+                    elements[i].x = 0
+                }
+                if ((elements[i].x + (elements[i].w * 100)) > 600) {
+                    elements[i].x = 600 - (elements[i].w * 100)
+                }
             elements[i].area.tl.x = elements[i].x;
             elements[i].area.tl.y = elements[i].y;
-            // elements[i].area.tr.x = elements[i].x + (elements[i].w * 100);
-            // elements[i].area.tr.y = elements[i].y;
-            // elements[i].area.bl.x = elements[i].x;
-            // elements[i].area.bl.y = elements[i].y + (elements[i].h * 100);
-            // elements[i].area.br.x = elements[i].x + (elements[i].w * 100);
-            // elements[i].area.br.y = elements[i].y + (elements[i].h * 100);
             elements[i].active = false;
         } else if (elements[i].direction == "vert" && elements[i].active == true) {
             elements[i].prevX = elements[i].x
             elements[i].prevY = elements[i].y
-            elements[i].y = (Math.floor(e.pageY / 100) * 100); 
+            elements[i].y = (Math.floor(e.pageY / 100) * 100);
+            if (elements[i].y < 0) {
+                elements[i].y = 0
+            }
+            if ((elements[i].y + (elements[i].h * 100)) > 600) {
+                elements[i].y = 600 - (elements[i].h * 100)
+            } 
             elements[i].active = false;
         }
         elements[i].indexCreate();
         elements[i].checkIndex();
         elements[i].drawPiece();
     }
+    checkWin();
+    score.innerText++;
 });
+
+// ---+== Border Limits ==+---
+if (this.collision == false) {
+    if (this.x < 0) {
+        this.x = 0
+    }
+    if ((this.x + (this.w * 100)) > 600) {
+        this.x = 600 - (this.w * 100)
+    }
+    if (this.y < 0) {
+        this.y = 0
+    }
+    if ((this.y + (this.h * 100)) > 600) {
+        this.y = 600 - (this.h * 100)
+    }
+}
+
+
 
 // --------+== PseudoCode ==+-----------
 
