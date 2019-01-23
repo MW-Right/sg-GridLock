@@ -24,9 +24,6 @@ class Grid {
         ctx.stroke();
     }
 }
-Grid.prototype.pieceAt = function(index) {
-
-}
 
 class Piece {
     constructor(x, y, length, direction, imp, w, h) {
@@ -41,7 +38,6 @@ class Piece {
         this.active = false;
         this.pieceArea = [[]];
         this.imp = imp;
-        this.com = []; 
         this.index = {};
         this.area = {
             tl: {
@@ -186,7 +182,7 @@ reset.addEventListener('click', function() {
 function checkWin() {
     setTimeout(function() {
         if (ferrari.area.tl.x == 400 && ferrari.area.tl.y == 200) {
-            alert("Win the ting");
+            alert("2 Ez 4 u");
         }
     }, 200)
 }
