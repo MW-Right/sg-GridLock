@@ -24,6 +24,9 @@ class Grid {
         ctx.stroke();
     }
 }
+Grid.prototype.pieceAt = function(index) {
+
+}
 
 class Piece {
     constructor(x, y, length, direction, imp, w, h) {
@@ -39,6 +42,7 @@ class Piece {
         this.pieceArea = [[]];
         this.imp = imp;
         this.com = []; 
+        this.index = {};
         this.area = {
             tl: {
                 x: this.x,
@@ -56,7 +60,7 @@ class Piece {
                 x: this.x + (100 * this.w),
                 y: this.y + (100 * this.h) 
             } 
-        }
+        };
         this.midpoints = {
             mt: {
                 x: this.area.tl.x + 100,
@@ -77,6 +81,29 @@ class Piece {
         }
 
     }
+    // indexCreate() {
+    //     for (let i = 0; i < this.length; i++) {
+    //         if (this.direction == "horz") {
+    //             this.index[i] = {horz:((this.x + 100) / 100) + i, vert: ((this.y + 100) / 100)}
+    //         } else {
+    //             this.index[i] = {horz:((this.x + 100) / 100), vert: ((this.y + 100) / 100) + i}
+    //         }
+    //     }
+    // }
+    checkIndex() {
+        for (let j = 0; j < this.length; j++) {
+            for (let i = 0; i < elements.length; i++) {
+                for (let k = 0; k < elements[i].length; k++) {
+                    // console.log(k)
+                    if (this === elements[i]) {
+                        continue;
+                    } else if (this.index[j].vert == elements[i].index[k].vert && this.index[j].horz == elements[i].index[k].horz){
+                        console.log("finally");
+                    }
+                }
+            }
+        }
+    } 
     drawPiece() {
         var l = (((this.length * 100) - 10) / this.length);
         this.com = [];
@@ -96,6 +123,14 @@ class Piece {
             ctx.fillRect(this.x + 5, (this.y + 5), (this.length * l), 90);
             this.pieceArea = [[this.x, this.y], [this.x  + (this.length * 100), this.y], [this.x, this.y + 100], [this.x + (this.length * 100), this.y + 100]];
             ctx.stroke();
+        }
+        // CREATING INDEX FOR DRAWN PIECE
+        for (let i = 0; i < this.length; i++) {
+            if (this.direction == "horz") {
+                this.index[i] = {horz:((this.x + 100) / 100) + i, vert: ((this.y + 100) / 100)}
+            } else {
+                this.index[i] = {horz:((this.x + 100) / 100), vert: ((this.y + 100) / 100) + i}
+            }
         }        
     }
     
@@ -147,8 +182,6 @@ reset.addEventListener('click', function() {
     init();
 })
 
-// -----+== Animation Loop ==+------
-
 // Win Condition
 function checkWin() {
     setTimeout(function() {
@@ -175,22 +208,25 @@ canvas.addEventListener("mouseup", (e) => {
             elements[i].x = (Math.floor(e.pageX / 100) * 100);
             elements[i].area.tl.x = elements[i].x;
             elements[i].area.tl.y = elements[i].y;
-            elements[i].area.tr.x = elements[i].x + (elements[i].w * 100);
-            elements[i].area.tr.y = elements[i].y;
-            elements[i].area.bl.x = elements[i].x;
-            elements[i].area.bl.y = elements[i].y + (elements[i].h * 100);
-            elements[i].area.br.x = elements[i].x + (elements[i].w * 100);
-            elements[i].area.br.y = elements[i].y + (elements[i].h * 100);
+            // elements[i].area.tr.x = elements[i].x + (elements[i].w * 100);
+            // elements[i].area.tr.y = elements[i].y;
+            // elements[i].area.bl.x = elements[i].x;
+            // elements[i].area.bl.y = elements[i].y + (elements[i].h * 100);
+            // elements[i].area.br.x = elements[i].x + (elements[i].w * 100);
+            // elements[i].area.br.y = elements[i].y + (elements[i].h * 100);
             elements[i].active = false;
         } else if (elements[i].direction == "vert" && elements[i].active == true) {
-            elements[i].y = (Math.floor(e.pageY / 100) * 100);
+            elements[i].y = (Math.floor(e.pageY / 100) * 100); 
             elements[i].active = false;
         }
-        elements[i].drawPiece();   
-        console.log(elements[i].area.tl)
+        elements[i].drawPiece();
+        elements[i].checkIndex();
+        // console.log(elements[i].index) 
+        // console.log(elements[i].area.tl)
     }
     checkWin();
 });
+
 // --------+== PseudoCode ==+-----------
 
 // ------ GRID -------
