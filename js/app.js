@@ -34,6 +34,8 @@ class Piece {
         // Length can only be 2 or 3
         this.x = (x - 1) * 100;
         this.y = (y - 1) * 100;
+        this.prevX = this.x;
+        this.prevY = this.y;
         this.direction = direction;
         this.active = false;
         this.pieceArea = [[]];
@@ -57,35 +59,18 @@ class Piece {
                 y: this.y + (100 * this.h) 
             } 
         };
-        this.midpoints = {
-            mt: {
-                x: this.area.tl.x + 100,
-                y: this.area.tl.y
-            },
-            mr: {
-                x: this.area.tr.x,
-                y: this.area.tr.y + 100
-            },
-            mb: {
-                x: this.area.bl.x + 100,
-                y: this.area.bl.y
-            },
-            ml: {
-                x: this.area.tl.x,
-                y: this.area.tl.y + 100
-            }
-        }
 
     }
-    // indexCreate() {
-    //     for (let i = 0; i < this.length; i++) {
-    //         if (this.direction == "horz") {
-    //             this.index[i] = {horz:((this.x + 100) / 100) + i, vert: ((this.y + 100) / 100)}
-    //         } else {
-    //             this.index[i] = {horz:((this.x + 100) / 100), vert: ((this.y + 100) / 100) + i}
-    //         }
-    //     }
-    // }
+    indexCreate() {
+    // CREATING INDEX FOR DRAWN PIECE
+        for (let i = 0; i < this.length; i++) {
+            if (this.direction == "horz") {
+                this.index[i] = {horz:((this.x + 100) / 100) + i, vert: ((this.y + 100) / 100)}
+            } else {
+                this.index[i] = {horz:((this.x + 100) / 100), vert: ((this.y + 100) / 100) + i}
+            }
+        }
+    }
     checkIndex() {
         for (let j = 0; j < this.length; j++) {
             for (let i = 0; i < elements.length; i++) {
@@ -94,7 +79,8 @@ class Piece {
                     if (this === elements[i]) {
                         continue;
                     } else if (this.index[j].vert == elements[i].index[k].vert && this.index[j].horz == elements[i].index[k].horz){
-                        console.log("finally");
+                        this.x = this.prevX;
+                        this.y = this.prevY;
                     }
                 }
             }
@@ -119,15 +105,7 @@ class Piece {
             ctx.fillRect(this.x + 5, (this.y + 5), (this.length * l), 90);
             this.pieceArea = [[this.x, this.y], [this.x  + (this.length * 100), this.y], [this.x, this.y + 100], [this.x + (this.length * 100), this.y + 100]];
             ctx.stroke();
-        }
-        // CREATING INDEX FOR DRAWN PIECE
-        for (let i = 0; i < this.length; i++) {
-            if (this.direction == "horz") {
-                this.index[i] = {horz:((this.x + 100) / 100) + i, vert: ((this.y + 100) / 100)}
-            } else {
-                this.index[i] = {horz:((this.x + 100) / 100), vert: ((this.y + 100) / 100) + i}
-            }
-        }        
+        }     
     }
     
 }
@@ -147,29 +125,32 @@ function init() {
     // Winning piece
     ferrari = new Piece(1, 3, 2, "horz", 1, 2, 1);
     ferrari.drawPiece();
+    ferrari.indexCreate();
     elements.push(ferrari);
     // Verticle pieces
     v1 = new Piece(4, 1, 3, "vert", 0, 1, 3);
     v1.drawPiece();
+    v1.indexCreate()
     elements.push(v1);
     v2 = new Piece(5, 4, 2, "vert", 0, 1, 2);
     v2.drawPiece();
+    v2.indexCreate();
     elements.push(v2);
     v3 = new Piece(2, 5, 2, "vert", 0, 1, 2);
     v3.drawPiece();
+    v3.indexCreate();
     elements.push(v3);
-    v4 = new Piece(6, 4, 3, "vert", 0, 1, 3);
+    v4 = new Piece(6, 1, 3, "vert", 0, 1, 3);
     v4.drawPiece();
+    v4.indexCreate();
     elements.push(v4);
     // Horizontal pieces
     h1 = new Piece(3, 5, 2, "horz", 0, 2, 1)
     h1.drawPiece();
+    h1.indexCreate();
     elements.push(h1);
 };
 init();
-
-// -----+== Collision ==+----
-
 
 // ------+== Reset Button ==+-------
 var reset = document.getElementById('reset');
@@ -201,7 +182,9 @@ canvas.addEventListener("mouseup", (e) => {
     gameGrid.gridDrawing();
     for (let i = 0; i < elements.length; i++) {
         if (elements[i].direction == "horz" && elements[i].active == true) {
-            elements[i].x = (Math.floor(e.pageX / 100) * 100);
+            elements[i].prevX = elements[i].x
+            elements[i].prevY = elements[i].y
+            elements[i].x = (Math.floor(e.pageX / 100) * 100); 
             elements[i].area.tl.x = elements[i].x;
             elements[i].area.tl.y = elements[i].y;
             // elements[i].area.tr.x = elements[i].x + (elements[i].w * 100);
@@ -212,15 +195,15 @@ canvas.addEventListener("mouseup", (e) => {
             // elements[i].area.br.y = elements[i].y + (elements[i].h * 100);
             elements[i].active = false;
         } else if (elements[i].direction == "vert" && elements[i].active == true) {
+            elements[i].prevX = elements[i].x
+            elements[i].prevY = elements[i].y
             elements[i].y = (Math.floor(e.pageY / 100) * 100); 
             elements[i].active = false;
         }
-        elements[i].drawPiece();
+        elements[i].indexCreate();
         elements[i].checkIndex();
-        // console.log(elements[i].index) 
-        // console.log(elements[i].area.tl)
+        elements[i].drawPiece();
     }
-    checkWin();
 });
 
 // --------+== PseudoCode ==+-----------
