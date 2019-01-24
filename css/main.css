@@ -49,3 +49,17 @@ button {
     padding-left: 37%;
     padding-top: 20px;
 }
+.instructions {
+    height: 600px;
+    width: 600px;
+    background: rgb(121, 121, 121);
+    margin-top: -665px;
+    margin-left: 30%;
+    margin-bottom: 50px;
+    display: block;
+    text-align: center;
+    padding: 50px 20px;
+    box-sizing: border-box;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 30px;
+}   

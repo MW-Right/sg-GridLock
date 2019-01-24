@@ -191,6 +191,19 @@
             ferrari.name = "ferrari";
         },
         map2 = function() {
+            ferrari = new Piece(3, 3, 2, "horz", 2, 1);
+            v1 = new Piece(1, 1, 3, "vert", 1, 3);
+            v2 = new Piece(2, 1, 3, "vert", 1, 3);
+            v3 = new Piece(3, 1, 2, "vert", 1, 2);
+            v4 = new Piece(5, 2, 3, "vert", 1, 3);
+            v5 = new Piece(6, 2, 3, "vert", 1, 3);
+            h1 = new Piece(1, 4, 2, "horz", 2, 1);
+            h2 = new Piece(4, 1, 2, "horz", 2, 1);
+            h3 = new Piece(5, 5, 2, "horz", 2, 1);
+            minMoves = 17;
+            ferrari.name = "ferrari";
+        },
+        map3 = function() {
             ferrari = new Piece(1, 3, 2, "horz", 2, 1);
             v1 = new Piece(1, 1, 2, "vert", 1, 2);
             v2 = new Piece(3, 2, 2, "vert", 1, 2);
@@ -207,11 +220,23 @@
             minMoves = 26;
             ferrari.name = "ferrari";
         },
-        map3 = function() {
-
-        },
         map4 = function() {
-
+            ferrari = new Piece(1, 3, 2, "horz", 2, 1);
+            v1 = new Piece(4, 1, 3, "vert", 1, 3);
+            v2 = new Piece(5, 2, 3, "vert", 1, 3);
+            v3 = new Piece(6, 2, 2, "vert", 1, 2);
+            v4 = new Piece(6, 4, 2, "vert", 1, 2);
+            v5 = new Piece(3, 5, 2, "vert", 1, 2);
+            v6 = new Piece(1, 4, 2, "vert", 1, 2);
+            v7 = null;
+            h1 = new Piece(2, 1, 2, "horz", 2, 1);
+            h2 = new Piece(1, 2, 3, "horz", 3, 1);
+            h3 = new Piece(5, 1, 2, "horz", 2, 1);
+            h4 = new Piece(3, 4, 2, "horz", 2, 1);
+            h5 = new Piece(4, 5, 2, "horz", 2, 1);
+            h6 = new Piece(1, 6, 2, "horz", 2, 1);
+            minMoves = 35;
+            ferrari.name = "ferrari";
         },
         map5 = function() {
             ferrari = new Piece(4, 3, 2, "horz", 2, 1);
@@ -226,7 +251,7 @@
             h2 = new Piece(1, 4, 3, "horz", 3, 1);
             h3 = new Piece(1, 6, 2, "horz", 2, 1);
             h4 = new Piece(5, 5, 2, "horz", 2, 1);
-            h5 = new Piece(5, 5, 2, "horz", 2, 1);
+            h5 = null;
             minMoves = 51;
             ferrari.name = "ferrari";
         }
@@ -332,15 +357,6 @@
         score.innerText = "0";
     })
 
-    // Win Condition
-    function checkWin() {
-        setTimeout(function() {
-            if (ferrari.area.tl.x == 400 && ferrari.area.tl.y == 200) {
-                alert("2 Ez 4 u");
-            }
-        }, 200)
-    }
-
     // ------+== On click listeners ==+----
     // If clicked in area of piece, switches the boolean
     canvas.addEventListener("mousedown", (e) => {
@@ -387,6 +403,20 @@
         checkWin();
     });
 
+     // Win Condition
+     function checkWin() {
+        setTimeout(function() {
+            if (ferrari.area.tl.x == 400 && ferrari.area.tl.y == 200) {
+                ctx.beginPath();
+                ctx.fillStyle = "#999";
+                ctx.fillRect(50, 150, 500, 120);
+                ctx.stroke();
+                ctx.font = "30px georgia"
+                ctx.fillStyle = "black"
+                ctx.fillText("You escaped!", 210, 220);
+            }
+        }, 200)
+    }
 
 
 // --------+== PseudoCode ==+-----------
