@@ -7,19 +7,33 @@
     <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
 </head>
 <body>
-    <div class="canvas-div">
-        <canvas id="canvas">Your browser does not support the canvas tag</canvas>
-        <button id="1">1</button>
-        <button id="2">2</button>
-        <button id="3">3</button>
-        <button id="4">4</button>
-        <button id="5">5</button>
+    <header>
+        GRIDLOCK
+    </header>
+    <div class="game-controls">
+        <!-- <div class="game"> -->
+            <canvas id="canvas">Your browser does not support the canvas tag</canvas>
+        <!-- </div> -->
+        <div class="level-select">
+            <button id="1">1</button>
+            <button id="2">2</button>
+            <button id="3">3</button>
+            <button id="4">4</button>
+            <button id="5">5</button>
+        </div>
+    </div>
+    <div class="instructions">
+        <p>First select your level, they increase in difficultly from 1 to 5.</p>
+        <p>The goal is to get your ferrari out of the GRIDLOCK, by getting it fully into the green area on the right.</p>
+        <p>You can only move your pieces forward or backwards in the direction it's facing.</p>
+        <p>Select level to start</p>
     </div>
     <div class="images">
-        <img id="ferrari" src="images/ferrari.png" width="280" height="86"/>
+        <img id="ferrari" src="images/ferrari.png" />
         <img id="lorryH" src="images/lorryH.png" />
-        <img id="jagV" src="images/jag-xkrV.png" width="86" height="280"/>
-        <img id="jagH" src="images/jag-xkrH.png" width="280" height="86"/>
+        <img id="lorryV" src="images/lorryV.png" />
+        <img id="jagV" src="images/jag-eV.png"/>
+        <img id="jagH" src="images/jag-xkrH.png" />
     </div>
     <div class="container">
         <div class="score"><span id="count"></span>/<span id="min-moves"></span></div>

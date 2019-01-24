@@ -1,8 +1,39 @@
+@font-face {
+    font-family: 'graffiti';
+    src: url('../fonts/graffiti/adrip1.ttf');
+}
+
 body {
-    background: white;
+    background: url("../images/background.JPG");
+    background-size: 110%;
+    background-repeat: no-repeat;
+    background-position-y: -340px;
+    background-position-x: -150px;
+}
+canvas {
+    display: block;
+    margin-left: 30%;
+    margin-right: 30%;
+}
+header {
+    height: 180px;
+    font-family: 'graffiti';
+    font-size: 180px;
+    color: white;
+    padding-left: 600px;
+    margin-top: -30px;
+    text-shadow: rgb(80, 38, 11) 5px 5px 5px;
+}
+button {
+    border: none;
+    padding: 5px 30px;
+    font-size: 30px;
+    border-radius: 5px;
 }
 #reset {
-    display: flex;
+    display: block;
+    margin-left: 840px;
+    margin-right: auto;
 }
 .images {
     display: none;
@@ -12,3 +43,23 @@ body {
     font-size: 30px;
     text-align: center;
 }
+
+.level-select {
+    display: block; 
+    padding-left: 37%;
+    padding-top: 20px;
+}
+.instructions {
+    height: 600px;
+    width: 600px;
+    background: rgb(121, 121, 121);
+    margin-top: -665px;
+    margin-left: 30%;
+    margin-bottom: 50px;
+    display: block;
+    text-align: center;
+    padding: 50px 20px;
+    box-sizing: border-box;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 30px;
+}   
