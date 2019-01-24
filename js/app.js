@@ -44,7 +44,7 @@
                 ctx.moveTo(this.pd + (100 * i), this.pd);
                 ctx.lineTo(this.pd + (100 * i), this.pd + (100 * this.gridDim));
             }
-            ctx.strokeStyle = "#FF0";
+            ctx.strokeStyle = "#FFF";
             ctx.setLineDash([1,0])
             ctx.lineWidth = "10";
             ctx.shadowColor = "#555";
@@ -52,7 +52,7 @@
             ctx.stroke();
         }
         endGoal() {
-            ctx.fillStyle = "rgba(0, 255, 0, 0.5)"
+            ctx.fillStyle = "rgba(0, 170, 0, 0.3)"
             ctx.fillRect(400, 200, 200, 100)
             ctx.stroke(); 
         }
@@ -191,19 +191,20 @@
             ferrari.name = "ferrari";
         },
         map2 = function() {
-            ferrari = new Piece(4, 3, 2, "horz", 2, 1);
-            v1 = new Piece(1, 2, 2, "vert", 1, 2);
+            ferrari = new Piece(1, 3, 2, "horz", 2, 1);
+            v1 = new Piece(1, 1, 2, "vert", 1, 2);
             v2 = new Piece(3, 2, 2, "vert", 1, 2);
-            v3 = new Piece(1, 4, 2, "vert", 1, 2);
-            v4 = new Piece(4, 4, 3, "vert", 1, 3);
-            v5 = new Piece(6, 3, 2, "vert", 1, 2);
-            v6 = new Piece(6, 5, 2, "vert", 1, 2);
+            v3 = new Piece(4, 2, 3, "vert", 1, 3);
+            v4 = new Piece(5, 3, 3, "vert", 1, 3);
+            v5 = null;
+            v6 = null;
             v7 = null;
-            h1 = new Piece(1, 1, 3, "horz", 3, 1);
-            h2 = new Piece(2, 4, 2, "horz", 2, 1);
-            h3 = new Piece(4, 2, 3, "horz", 3, 1);
-            h4 = new Piece(1, 6, 3, "horz", 3, 1);
-            minMoves = 12;
+            h1 = new Piece(2, 1, 2, "horz", 2, 1);
+            h2 = new Piece(4, 1, 2, "horz", 2, 1);
+            h3 = new Piece(2, 4, 2, "horz", 2, 1);
+            h4 = new Piece(2, 5, 2, "horz", 2, 1);
+            h5 = new Piece(1, 6, 3, "horz", 3, 1)
+            minMoves = 26;
             ferrari.name = "ferrari";
         },
         map3 = function() {
@@ -226,7 +227,7 @@
             h3 = new Piece(1, 6, 2, "horz", 2, 1);
             h4 = new Piece(5, 5, 2, "horz", 2, 1);
             h5 = new Piece(5, 5, 2, "horz", 2, 1);
-            minMoves = 12;
+            minMoves = 51;
             ferrari.name = "ferrari";
         }
     ]
@@ -323,7 +324,6 @@
             elements.push(h4);
         }
     };
-    init();
     // ------+== Reset Button ==+-------
     var reset = document.getElementById('reset');
     reset.addEventListener('click', function() {
@@ -345,9 +345,8 @@
     // If clicked in area of piece, switches the boolean
     canvas.addEventListener("mousedown", (e) => {
         for (let i = 0; i < elements.length; i++) {
-            if (e.pageX > elements[i].x && e.pageX < (elements[i].x + (elements[i].w * 100)) && e.pageY > elements[i].y && e.pageY < (elements[i].y + (100 * elements[i].h))) {
+            if ((e.pageX - (window.innerWidth * 0.3)) > elements[i].x && (e.pageX - (window.innerWidth * 0.3)) < (elements[i].x + (elements[i].w * 100)) && (e.pageY - 150) > elements[i].y && (e.pageY - 150) < (elements[i].y + (100 * elements[i].h))) {
                 elements[i].active = true;
-                console.log("click")
             }   
         }   
     });
@@ -359,7 +358,7 @@
             if (elements[i].direction == "horz" && elements[i].active == true) {
                 elements[i].prevX = elements[i].x
                 elements[i].prevY = elements[i].y
-                elements[i].x = (((Math.floor(e.pageX / 100))) * 100);
+                elements[i].x = ((Math.floor((e.pageX - 600) / 100)) * 100);
                     if (elements[i].x < 0) {
                         elements[i].x = 0
                     }
@@ -372,7 +371,7 @@
             } else if (elements[i].direction == "vert" && elements[i].active == true) {
                 elements[i].prevX = elements[i].x
                 elements[i].prevY = elements[i].y
-                elements[i].y = (Math.floor(e.pageY / 100) * 100);
+                elements[i].y = ((Math.floor((e.pageY - 150) / 100)) * 100);
                 if (elements[i].y < 0) {
                     elements[i].y = 0
                 }

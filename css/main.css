@@ -1,8 +1,39 @@
+@font-face {
+    font-family: 'graffiti';
+    src: url('../fonts/graffiti/adrip1.ttf');
+}
+
 body {
-    background: white;
+    background: url("../images/background.JPG");
+    background-size: 110%;
+    background-repeat: no-repeat;
+    background-position-y: -340px;
+    background-position-x: -150px;
+}
+canvas {
+    display: block;
+    margin-left: 30%;
+    margin-right: 30%;
+}
+header {
+    height: 180px;
+    font-family: 'graffiti';
+    font-size: 180px;
+    color: white;
+    padding-left: 600px;
+    margin-top: -30px;
+    text-shadow: rgb(80, 38, 11) 5px 5px 5px;
+}
+button {
+    border: none;
+    padding: 5px 30px;
+    font-size: 30px;
+    border-radius: 5px;
 }
 #reset {
-    display: flex;
+    display: block;
+    margin-left: 840px;
+    margin-right: auto;
 }
 .images {
     display: none;
@@ -11,4 +42,10 @@ body {
     display: block;
     font-size: 30px;
     text-align: center;
+}
+
+.level-select {
+    display: block; 
+    padding-left: 37%;
+    padding-top: 20px;
 }
