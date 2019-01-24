@@ -5,11 +5,6 @@
     ctx.canvas.height = "600";
     // Setting full-scope variables
     var elements = [];
-    // var scoreTally = document.getElementById('count');
-    // let score = 0;
-    //     scoreTally.innerText = score;
-    // var mMoves = document.getElementById('min-moves');
-    // let minMoves = 12;
 
     // Grid Class
     class Grid {
@@ -197,6 +192,7 @@
             v3 = new Piece(3, 1, 2, "vert", 1, 2);
             v4 = new Piece(5, 2, 3, "vert", 1, 3);
             v5 = new Piece(6, 2, 3, "vert", 1, 3);
+            v6 = new Piece(4, 4, 2, "vert", 1, 2);
             h1 = new Piece(1, 4, 2, "horz", 2, 1);
             h2 = new Piece(4, 1, 2, "horz", 2, 1);
             h3 = new Piece(5, 5, 2, "horz", 2, 1);
