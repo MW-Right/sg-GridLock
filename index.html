@@ -9,11 +9,22 @@
 <body>
     <div class="canvas-div">
         <canvas id="canvas">Your browser does not support the canvas tag</canvas>
+        <button id="1">1</button>
+        <button id="2">2</button>
+        <button id="3">3</button>
+        <button id="4">4</button>
+        <button id="5">5</button>
+    </div>
+    <div class="images">
+        <img id="ferrari" src="images/ferrari.png" width="280" height="86"/>
+        <img id="lorryH" src="images/lorryH.png" />
+        <img id="jagV" src="images/jag-xkrV.png" width="86" height="280"/>
+        <img id="jagH" src="images/jag-xkrH.png" width="280" height="86"/>
     </div>
     <div class="container">
+        <div class="score"><span id="count"></span>/<span id="min-moves"></span></div>
+        <!-- <button type="button" id="undo">Undo</button> -->
         <button type="button" id="reset">Reset</button>
-        <div id="moves"></div>
-        <button type="button" id="undo">Undo</button>
     </div>
     <script src="js/app.js"></script>
 </body>
