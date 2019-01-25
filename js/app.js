@@ -205,7 +205,7 @@
             v2 = new Piece(3, 2, 2, "vert", 1, 2);
             v3 = new Piece(4, 2, 3, "vert", 1, 3);
             v4 = new Piece(5, 3, 3, "vert", 1, 3);
-            v5 = null;
+            v5 = new Piece(6, 3, 3, "vert", 1, 3);
             v6 = null;
             v7 = null;
             h1 = new Piece(2, 1, 2, "horz", 2, 1);
@@ -357,7 +357,7 @@
     // If clicked in area of piece, switches the boolean
     canvas.addEventListener("mousedown", (e) => {
         for (let i = 0; i < elements.length; i++) {
-            if ((e.pageX - (window.innerWidth * 0.3)) > elements[i].x && (e.pageX - (window.innerWidth * 0.3)) < (elements[i].x + (elements[i].w * 100)) && (e.pageY - 150) > elements[i].y && (e.pageY - 150) < (elements[i].y + (100 * elements[i].h))) {
+            if ((e.pageX - (410)) > elements[i].x && (e.pageX - (410)) < (elements[i].x + (elements[i].w * 100)) && (e.pageY - 150) > elements[i].y && (e.pageY - 150) < (elements[i].y + (100 * elements[i].h))) {
                 elements[i].active = true;
             }   
         }   
@@ -370,7 +370,7 @@
             if (elements[i].direction == "horz" && elements[i].active == true) {
                 elements[i].prevX = elements[i].x
                 elements[i].prevY = elements[i].y
-                elements[i].x = ((Math.floor((e.pageX - 600) / 100)) * 100);
+                elements[i].x = ((Math.floor((e.pageX - 410) / 100)) * 100);
                     if (elements[i].x < 0) {
                         elements[i].x = 0
                     }

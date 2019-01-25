@@ -7,20 +7,19 @@ body {
     background: url("../images/background.JPG");
     background-size: 110%;
     background-repeat: no-repeat;
-    background-position-y: -340px;
-    background-position-x: -150px;
+    background-position-y: -140px;
+    background-position-x: -50px;
 }
 canvas {
     display: block;
-    margin-left: 30%;
-    margin-right: 30%;
+    margin-left: 410px;
 }
 header {
-    height: 180px;
+    height: 150px;
     font-family: 'graffiti';
-    font-size: 180px;
+    font-size: 150px;
     color: white;
-    padding-left: 600px;
+    padding-left: 450px;
     margin-top: -30px;
     text-shadow: rgb(80, 38, 11) 5px 5px 5px;
 }
@@ -32,8 +31,8 @@ button {
 }
 #reset {
     display: block;
-    margin-left: 840px;
-    margin-right: auto;
+    margin-left: 1050px;
+    margin-top: -200px;
 }
 .images {
     display: none;
@@ -53,7 +52,7 @@ button {
     height: 600px;
     width: 600px;
     background: rgb(121, 121, 121);
-    margin-top: -665px;
+    margin-top: -660px;
     margin-left: 30%;
     margin-bottom: 50px;
     display: block;
@@ -62,4 +61,5 @@ button {
     box-sizing: border-box;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 30px;
+    color: white;
 }   
