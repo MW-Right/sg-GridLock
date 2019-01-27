@@ -87,6 +87,7 @@
                         y: this.y + (100 * this.h) 
                     } 
                 };
+                this.block;
 
             }
             indexCreate() {
@@ -201,37 +202,35 @@
         },
         map3 = function() {
             ferrari = new Piece(1, 3, 2, "horz", 2, 1);
-            v1 = new Piece(1, 1, 2, "vert", 1, 2);
+            v1 = new Piece(2, 1, 2, "vert", 1, 2);
             v2 = new Piece(3, 2, 2, "vert", 1, 2);
-            v3 = new Piece(4, 2, 3, "vert", 1, 3);
-            v4 = new Piece(5, 3, 3, "vert", 1, 3);
-            v5 = new Piece(6, 3, 3, "vert", 1, 3);
-            v6 = null;
-            v7 = null;
-            h1 = new Piece(2, 1, 2, "horz", 2, 1);
-            h2 = new Piece(4, 1, 2, "horz", 2, 1);
-            h3 = new Piece(2, 4, 2, "horz", 2, 1);
-            h4 = new Piece(2, 5, 2, "horz", 2, 1);
-            h5 = new Piece(1, 6, 3, "horz", 3, 1)
-            minMoves = 26;
+            v3 = new Piece(5, 1, 2, "vert", 1, 2);
+            v4 = new Piece(6, 1, 3, "vert", 1, 3);
+            v5 = new Piece(5, 3, 2, "vert", 1, 2);
+            v6 = new Piece(1, 4, 3, "vert", 1, 3);
+            v7 = new Piece(4, 5, 2, "vert", 1, 2);
+            h1 = new Piece(2, 4, 3, "horz", 2, 1);
+            h2 = new Piece(2, 5, 2, "horz", 2, 1);
+            h3 = new Piece(3, 1, 2, "horz", 2, 1);
+            h4 = new Piece(5, 6, 2, "horz", 2, 1);
+            minMoves = 25;
             ferrari.name = "ferrari";
         },
         map4 = function() {
             ferrari = new Piece(1, 3, 2, "horz", 2, 1);
-            v1 = new Piece(4, 1, 3, "vert", 1, 3);
-            v2 = new Piece(5, 2, 3, "vert", 1, 3);
-            v3 = new Piece(6, 2, 2, "vert", 1, 2);
-            v4 = new Piece(6, 4, 2, "vert", 1, 2);
-            v5 = new Piece(3, 5, 2, "vert", 1, 2);
-            v6 = new Piece(1, 4, 2, "vert", 1, 2);
+            v1 = new Piece(2, 1, 2, "vert", 1, 2);
+            v2 = new Piece(6, 2, 2, "vert", 1, 2);
+            v3 = new Piece(4, 3, 2, "vert", 1, 2);
+            v4 = new Piece(3, 3, 3, "vert", 1, 3);
+            v5 = new Piece(1, 5, 2, "vert", 1, 2);
+            v6 = new Piece(6, 5, 2, "vert", 1, 2);
             v7 = null;
-            h1 = new Piece(2, 1, 2, "horz", 2, 1);
-            h2 = new Piece(1, 2, 3, "horz", 3, 1);
-            h3 = new Piece(5, 1, 2, "horz", 2, 1);
-            h4 = new Piece(3, 4, 2, "horz", 2, 1);
-            h5 = new Piece(4, 5, 2, "horz", 2, 1);
-            h6 = new Piece(1, 6, 2, "horz", 2, 1);
-            minMoves = 35;
+            h1 = new Piece(3, 1, 2, "horz", 2, 1);
+            h2 = new Piece(3, 2, 2, "horz", 2, 1);
+            h3 = new Piece(5, 4, 2, "horz", 2, 1);
+            h4 = new Piece(4, 5, 2, "horz", 2, 1);
+            h5 = new Piece(2, 6, 3, "horz", 4, 1);
+            minMoves = 31;
             ferrari.name = "ferrari";
         },
         map5 = function() {
@@ -350,17 +349,33 @@
     reset.addEventListener('click', function() {
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         init();
-        score.innerText = "0";
-    })
+        })
 
     // ------+== On click listeners ==+----
     // If clicked in area of piece, switches the boolean
     canvas.addEventListener("mousedown", (e) => {
+        // 410 is the left margin of the canvas on the window, aim is to change this to a funtion of window.width for responsiveness
+        // Same applies to the 150 and vertical pieces
         for (let i = 0; i < elements.length; i++) {
             if ((e.pageX - (410)) > elements[i].x && (e.pageX - (410)) < (elements[i].x + (elements[i].w * 100)) && (e.pageY - 150) > elements[i].y && (e.pageY - 150) < (elements[i].y + (100 * elements[i].h))) {
                 elements[i].active = true;
-            }   
-        }   
+            }
+            // for (let i = 0; i < elements.length; i++) {
+            //     for (let j = 0; j < elements[i].length; j++) {
+            //         if (elements[i].direction = "horz" && (e.pageX - 410) > elements[i].x + (100 * (j * elements[i].length)) && (e.pageX - 410) < elements[i].x + (100 * ((j + 1) * elements[i].length)) && (e.pageY - 150) > elements[i].y && (e.pageY - 150) < (elements[i].y + (100 * elements[i].h))) {
+            //             elements[i].active = true;
+            //             elements[i].block = [j];
+            //             console.log(e.pageX);
+            //             console.log(elements[i].x + (100 * (j * elements[i].length)));
+            //             console.log(elements[i].x + (100 * ((j + 1) * elements[i].length)));
+            //             console.log(elements[i].block);
+            //         } else if (elements[i].direction = "vert" && (e.pageX - 410) > elements[i].x && (e.pageX - 410) < elements[i].x + (100 * elements[i].length) && (e.pageY - 150) > elements[i].y + (100 * (j * elements[i].length)) && (e.pageY - 150) < elements[i].y + (100 * ((j + 1) * elements[i].length))) {
+            //             elements[i].active = true;
+            //             elements[i].block = [j];
+            //             console.log(elements[i].block);
+            //         }
+            // }
+        }
     });
     canvas.addEventListener("mouseup", (e) => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -370,7 +385,7 @@
             if (elements[i].direction == "horz" && elements[i].active == true) {
                 elements[i].prevX = elements[i].x
                 elements[i].prevY = elements[i].y
-                elements[i].x = ((Math.floor((e.pageX - 410) / 100)) * 100);
+                elements[i].x = ((Math.floor(((e.pageX - 410) / 100))) * 100);
                     if (elements[i].x < 0) {
                         elements[i].x = 0
                     }
@@ -399,6 +414,7 @@
         checkWin();
     });
 
+    //var broomBroom = new Audio("../sounds/car-driveaway-daniel_simon.mp3");
      // Win Condition
      function checkWin() {
         setTimeout(function() {
@@ -410,6 +426,9 @@
                 ctx.font = "30px georgia"
                 ctx.fillStyle = "black"
                 ctx.fillText("You escaped!", 210, 220);
+                //broomBroom.play();
+                new Audio("./sounds/car-driveaway-daniel_simon.mp3").play();
+                console.log("playsound")
             }
         }, 200)
     }
