@@ -87,6 +87,7 @@
                         y: this.y + (100 * this.h) 
                     } 
                 };
+                this.block;
 
             }
             indexCreate() {
@@ -205,7 +206,7 @@
             v2 = new Piece(3, 2, 2, "vert", 1, 2);
             v3 = new Piece(4, 2, 3, "vert", 1, 3);
             v4 = new Piece(5, 3, 3, "vert", 1, 3);
-            v5 = new Piece(6, 3, 3, "vert", 1, 3);
+            v5 = null;
             v6 = null;
             v7 = null;
             h1 = new Piece(2, 1, 2, "horz", 2, 1);
@@ -350,17 +351,33 @@
     reset.addEventListener('click', function() {
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         init();
-        score.innerText = "0";
-    })
+        })
 
     // ------+== On click listeners ==+----
     // If clicked in area of piece, switches the boolean
     canvas.addEventListener("mousedown", (e) => {
-        for (let i = 0; i < elements.length; i++) {
-            if ((e.pageX - (410)) > elements[i].x && (e.pageX - (410)) < (elements[i].x + (elements[i].w * 100)) && (e.pageY - 150) > elements[i].y && (e.pageY - 150) < (elements[i].y + (100 * elements[i].h))) {
-                elements[i].active = true;
-            }   
-        }   
+        // 410 is the left margin of the canvas on the window, aim is to change this to a funtion of window.width for responsiveness
+        // Same applies to the 150 and vertical pieces
+        // for (let i = 0; i < elements.length; i++) {
+            // if ((e.pageX - (410)) > elements[i].x && (e.pageX - (410)) < (elements[i].x + (elements[i].w * 100)) && (e.pageY - 150) > elements[i].y && (e.pageY - 150) < (elements[i].y + (100 * elements[i].h))) {
+            //     elements[i].active = true;
+            // }
+            for (let i = 0; i < elements.length; i++) {
+                for (let j = 0; j < elements[i].length; j++) {
+                    if (elements[i].direction = "horz" && (e.pageX - 410) > elements[i].x + (100 * (j * elements[i].length)) && (e.pageX - 410) < elements[i].x + (100 * ((j + 1) * elements[i].length)) && (e.pageY - 150) > elements[i].y && (e.pageY - 150) < (elements[i].y + (100 * elements[i].h))) {
+                        elements[i].active = true;
+                        elements[i].block = [j];
+                        console.log(e.pageX);
+                        console.log(elements[i].x + (100 * (j * elements[i].length)));
+                        console.log(elements[i].x + (100 * ((j + 1) * elements[i].length)));
+                        console.log(elements[i].block);
+                    } else if (elements[i].direction = "vert" && (e.pageX - 410) > elements[i].x && (e.pageX - 410) < elements[i].x + (100 * elements[i].length) && (e.pageY - 150) > elements[i].y + (100 * (j * elements[i].length)) && (e.pageY - 150) < elements[i].y + (100 * ((j + 1) * elements[i].length))) {
+                        elements[i].active = true;
+                        elements[i].block = [j];
+                        console.log(elements[i].block);
+                    }
+            }
+        }
     });
     canvas.addEventListener("mouseup", (e) => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -370,7 +387,7 @@
             if (elements[i].direction == "horz" && elements[i].active == true) {
                 elements[i].prevX = elements[i].x
                 elements[i].prevY = elements[i].y
-                elements[i].x = ((Math.floor((e.pageX - 410) / 100)) * 100);
+                elements[i].x = ((Math.floor(((e.pageX - 410) - (elements[i].block * 100) / 100))) * 100);
                     if (elements[i].x < 0) {
                         elements[i].x = 0
                     }
@@ -383,7 +400,7 @@
             } else if (elements[i].direction == "vert" && elements[i].active == true) {
                 elements[i].prevX = elements[i].x
                 elements[i].prevY = elements[i].y
-                elements[i].y = ((Math.floor((e.pageY - 150) / 100)) * 100);
+                elements[i].y = ((Math.floor((e.pageY - 150) - (elements[i].block * 100) / 100)) * 100);
                 if (elements[i].y < 0) {
                     elements[i].y = 0
                 }
@@ -399,6 +416,7 @@
         checkWin();
     });
 
+    //var broomBroom = new Audio("../sounds/car-driveaway-daniel_simon.mp3");
      // Win Condition
      function checkWin() {
         setTimeout(function() {
@@ -410,6 +428,9 @@
                 ctx.font = "30px georgia"
                 ctx.fillStyle = "black"
                 ctx.fillText("You escaped!", 210, 220);
+                //broomBroom.play();
+                new Audio("./sounds/car-driveaway-daniel_simon.mp3").play();
+                console.log("playsound")
             }
         }, 200)
     }
